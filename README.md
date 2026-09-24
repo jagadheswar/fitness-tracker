@@ -1,159 +1,25 @@
-# fitness-tracker
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from mpl_toolkits.mplot3d import Axes3D
+1.Project Title:
+"Fitness Data Visualization using Matplotlib and Seaborn"
+2.Problem Statement
+Visualize fitness data using Matplotlib and Seaborn to understand workout patterns, caloric trends, and overall fitness progress.
+3.Objective
+	Learn data visualization techniques.
+	Represent fitness data graphically.
 
-==================================================================
-# 1. IMPORT AND PREPARE DATA (From Assignment 4)
-==================================================================
-data = {
-    'Activity Name': ['Running', 'Yoga', 'Cycling', 'Weightlifting', 'Running'],
-    'Duration': [45, 60, 30, 50, np.nan], 
-    'Calories Burned': [450, 150, 300, 400, 420],
-    'Date': ['2026-05-01', '2026-05-01', '2026-05-02', '2026-05-02', '2026-05-03']
-}
-df = pd.DataFrame(data)
+4.Tools & Technologies Used
+	Programming Language: Python 3.x
+	Core Libraries:
+o	Pandas: For importing, cleaning, and structuring the Assignment 4 fitness DataFrame.
+o	NumPy: For handling missing numerical calculations and array coordinate mapping.
+o	Matplotlib (pyplot & mplot3d): For rendering basic charts (line, scatter, bar, pie) and generating the advanced 3D spatial bar graph.
+o	Seaborn: For statistical plotting, including distribution density (kdeplot), workout frequency tracking (countplot), and correlation matrix heatmaps.
+	Development Environment: Jupyter Notebook or Visual Studio Code (VS Code).
 
-# Impute missing duration elements with the median
-df['Duration'] = df['Duration'].fillna(df['Duration'].median())
-# String case cleanup formatting
-df['Activity Name'] = df['Activity Name'].str.strip().str.title()
-# Chronological ordering adjustment
-df = df.sort_values(by='Date').reset_index(drop=True)
-
-# Console Logs Calculations
-print("--- Fitness Data Summary ---")
-calories = np.array(df['Calories Burned'])
-print(f"Total Calories Burned: {np.sum(calories)}")
-print(f"Average Calories Burned: {np.mean(calories)}")
-
-activity_totals = df.groupby('Activity Name')['Calories Burned'].sum()
-print("\nCalories per Activity:")
-print(activity_totals)
-print("-" * 30)
-
-
-
-
-==================================================================
-# 2. BASIC VISUALIZATIONS (Matplotlib)
-==================================================================
-# Line Plot: Progress Over Time
-plt.figure(figsize=(6, 4))
-plt.plot(df['Date'], df['Calories Burned'], marker='o', color='blue', linestyle='-')
-plt.title('Fitness Progress: Calories Over Time')
-plt.xlabel('Date')
-plt.ylabel('Calories Burned')
-plt.grid(True, alpha=0.3)
-plt.tight_layout()
-plt.show()
-
-# Scatter Plot: Duration vs Calories
-plt.figure(figsize=(6, 4))
-plt.scatter(df['Duration'], df['Calories Burned'], color='orange', s=100)
-plt.title('Duration vs Calories Burned')
-plt.xlabel('Duration (Minutes)')
-plt.ylabel('Calories Burned')
-plt.grid(True, alpha=0.3)
-plt.tight_layout()
-plt.show()
-
-
-==================================================================
-# 3. STATISTICAL PLOTS (Histogram & Density)
-==================================================================
-plt.figure(figsize=(12, 4))
-
-# Histogram
-plt.subplot(1, 2, 1)
-plt.hist(df['Calories Burned'], bins=4, color='purple', edgecolor='black', alpha=0.7)
-plt.title('Calorie Distribution')
-plt.xlabel('Calories')
-plt.ylabel('Count')
-
-# Density Plot
-plt.subplot(1, 2, 2)
-sns.kdeplot(df['Calories Burned'], fill=True, color='olive')
-plt.title('Calorie Burn Density')
-plt.xlabel('Calories')
-plt.tight_layout()
-plt.show()
-
-
- ==================================================================
-# 4. CATEGORICAL VISUALIZATION (Bar & Pie)
-==================================================================
-plt.figure(figsize=(12, 5))
-
-# Bar Chart
-plt.subplot(1, 2, 1)
-activity_totals.plot(kind='bar', color='teal', edgecolor='black')
-plt.title('Total Calories by Activity')
-plt.ylabel('Calories')
-plt.xticks(rotation=45)
-
-# Pie Chart
-plt.subplot(1, 2, 2)
-df['Activity Name'].value_counts().plot(kind='pie', autopct='%1.1f%%', colors=['lightcoral', 'skyblue', 'lightgreen', 'gold'])
-plt.title('Activity Distribution')
-plt.ylabel('')
-plt.tight_layout()
-plt.show()
-
-
-
-
- ==================================================================
-# 5. SEABORN VISUALIZATION (Count & Heatmap)
-==================================================================
-
-plt.figure(figsize=(12, 5))
-
-# Count Plot
-plt.subplot(1, 2, 1)
-sns.countplot(x='Activity Name', data=df, palette='viridis', hue='Activity Name', legend=False)
-plt.title('Number of Workouts by Type')
-
-# Heatmap Correlation
-plt.subplot(1, 2, 2)
-sns.heatmap(df[['Duration', 'Calories Burned']].corr(), annot=True, cmap='coolwarm', vmin=-1, vmax=1)
-plt.title('Correlation: Duration vs Calories')
-plt.tight_layout()
-plt.show()
-
-
-
-
- ==================================================================
-# 6. ADVANCED VISUALIZATION (3D Graph)
-==================================================================
-fig = plt.figure(figsize=(9, 6))
-ax = fig.add_subplot(111, projection='3d')
-
-x_positions = np.arange(len(df))
-y_positions = np.zeros(len(df))
-z_positions = np.zeros(len(df))
-
-bar_width = 0.4
-bar_depth = 0.4
-bar_heights = df['Calories Burned']
-
-ax.bar3d(x_positions, y_positions, z_positions, 
-         bar_width, bar_depth, bar_heights, 
-         shade=True, color='cyan', edgecolor='black')
-
-ax.set_xticks(x_positions + bar_width/2)
-ax.set_xticklabels(df['Activity Name'], rotation=15)
-
-ax.set_title('3D Bar Graph: Calories Burned per Session')
-ax.set_xlabel('Activity Name')
-ax.set_ylabel('Sessions')
-ax.set_zlabel('Calories Burned')
-ax.set_yticks([]) 
-
-plt.tight_layout()
-plt.show()
-
-
+5.Methodology / Approach
+The project executes a 3-step data visualization pipeline to translate fitness records into actionable health metrics:
+1.	Data Prep (From Assignment 4): Imported the Pandas DataFrame, handled missing duration values using the median, standardized text formatting to title case, and sorted records chronologically by date.
+2.	Multi-Dimensional Plotting:
+o	Matplotlib: Leveraged line plots for historical trends and scatter plots to analyze duration variables.
+o	Statistical & Categorical: Built binned histograms and Seaborn KDE plots for distribution density, alongside bar and pie charts to evaluate absolute total calories and behavioral activity frequencies.
+o	Seaborn Features: Utilized countplot for tracking workout frequency and an annotated heatmap matrix to capture numeric correlation trends.
+3.	Advanced Layouts & 3D Styling: Structured clean side-by-side dashboards using plt.subplot(), added clear labels/grids, and configured an advanced 3D spatial bar chart to map standalone session intensities.
